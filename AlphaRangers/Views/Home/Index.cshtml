@@ -2,17 +2,28 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
+<div class="row" style="margin-top: 20px; margin-left: 20px;">
     <div class="col-md-4">
-        <input id="myValues"/>
+        <div id="battery" style="margin-left: 50px; margin-top: 120px;"></div>
     </div>
     <div class="col-md-4">
+        <input id="speedometer" class="hidden" />
     </div>
     <div class="col-md-4">
+        <div>
+            <img style="position: absolute; width: 100px; margin-top: 160px; margin-left: 10px;" src="~/images/lap.png" />
+            <div id="lap-qtd" style="position: absolute; margin-top: 245px; margin-left: 10px; font-size: 40pt;">0</div>
+
+            <img style="position: absolute;" src="~/images/foot-press.jpg" />
+            <div id="freio-qtd" style="position: absolute; margin-top: 100px; margin-left: 10px; font-size: 40pt;">0</div>
+        </div>
+        <div style="margin-left: 250px; margin-top: 50px;">
+            <div class="tempGauge0">20&deg;C</div>
+        </div>
     </div>
 </div>
 
-<div class="row">
+<div class="row" style="margin-top: 10px; background-color: rgba(200,200,200,0.8); padding: 20px 20px 20px 20px; border-radius: 5px;">
     <div class="col-md-4">
         <a class="btn green-btn" href="#"><i class="ion-ios-arrow-down"></i></a>
     </div>
@@ -24,6 +35,20 @@
     </div>
 </div>
 
+<script src="//code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+
+@RenderPage("~/Views/Home/plugins.cshtml")
+
 <script type="text/javascript">
-    $("#myValues").myfunc({ divFact: 10, eventListenerType: 'keyup' });
+    $("#speedometer").myfunc({ divFact: 10, eventListenerType: 'keyup' });
+
+    battery = $("#battery").battery({
+        backgroundColor: '#1ABC9C',
+        batteryColor: '#16A085',
+        maxWidth: 150
+    });
+
+    battery.Update(100);
+
+    $(".tempGauge0").tempGauge({width:100, borderWidth:2, showLabel:true, showScale : true});
 </script>

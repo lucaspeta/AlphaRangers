@@ -24,6 +24,8 @@
                     <li>@Html.ActionLink("Relatórios", "Reports", "Home")</li>
                 </ul>
             </div>
+
+            <button class="btn btn-danger" style="position: absolute; margin-top: -40px; right:20px;">Desligar Veículo</button>
         </div>
     </div>
     <div class="container body-content">
@@ -36,6 +38,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+
     @RenderSection("scripts", required: false)
 </body>
 </html>

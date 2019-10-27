@@ -144,6 +144,15 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\lap.png" />
+    <Content Include="images\circle-2.png" />
+    <Content Include="images\circle-3.png" />
+    <Content Include="images\circle.png" />
+    <Content Include="images\foot-press.jpg" />
+    <Content Include="images\needle.png" />
+    <Content Include="images\speedometer-2.png" />
+    <Content Include="images\speedometer-315.png" />
+    <Content Include="images\speedometer.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
@@ -171,6 +180,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Reports.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\plugins.cshtml" />
+    <Content Include="Views\Home\battery.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

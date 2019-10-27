@@ -24,8 +24,8 @@ textarea {
 }
 
 .red-btn {
-    height: 200px;
-    width: 200px;
+    height: 150px;
+    width: 150px;
     border-radius: 50%;
     border: 1px solid #d9534f;
     background-color: #d9534f;
@@ -34,8 +34,8 @@ textarea {
 }
 
 .yellow-btn {
-    height: 200px;
-    width: 200px;
+    height: 150px;
+    width: 150px;
     border-radius: 50%;
     border: 1px solid #ffc107;
     background-color: #ffc107;
@@ -44,8 +44,8 @@ textarea {
 }
 
 .green-btn {
-    height: 200px;
-    width: 200px;
+    height: 150px;
+    width: 150px;
     border-radius: 50%;
     border: 1px solid #5cb85c;
     background-color: #5cb85c;
@@ -56,4 +56,38 @@ textarea {
 .green-btn:hover, .yellow-btn:hover, .red-btn:hover{
     opacity: 1;
     transition: 1s;
+}
+
+.battery {
+    padding: 20px;
+    padding-right: 30px;
+}
+
+.batFill {
+    position: relative;
+    height: 71px;
+}
+
+.bat-border {
+    border: 4px solid black;
+    border-radius: 15px;
+    padding: 5px;
+    display: inline-block;
+}
+
+.bat-ico {
+    width: 0px;
+    border: 4px solid black;
+    height: 61px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.bat-text {
+    font-size: 25px;
+    font-family: sans-serif;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    top: 25%;
 }
