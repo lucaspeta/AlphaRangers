@@ -7,18 +7,18 @@
         <div id="battery" style="margin-left: 50px; margin-top: 120px;"></div>
     </div>
     <div class="col-md-4">
-        <input id="speedometer" class="hidden" />
+        <input id="speedometer" />
     </div>
     <div class="col-md-4">
         <div>
             <img style="position: absolute; width: 100px; margin-top: 160px; margin-left: 10px;" src="~/images/lap.png" />
-            <div id="lap-qtd" style="position: absolute; margin-top: 245px; margin-left: 10px; font-size: 40pt;">0</div>
+            <div id="lap-qtd" style="position: absolute; margin-top: 245px; margin-left: 10px; font-size: 40pt;"><div id="lap-qtd">0</div></div>
 
             <img style="position: absolute;" src="~/images/foot-press.jpg" />
-            <div id="freio-qtd" style="position: absolute; margin-top: 100px; margin-left: 10px; font-size: 40pt;">0</div>
+            <div id="freio-qtd" style="position: absolute; margin-top: 100px; margin-left: 10px; font-size: 40pt;"><div id="freio-qtd">0</div></div>
         </div>
         <div style="margin-left: 250px; margin-top: 50px;">
-            <div class="tempGauge0">20&deg;C</div>
+            <div class="tempGauge0"></div>
         </div>
     </div>
 </div>
@@ -50,5 +50,29 @@
 
     battery.Update(100);
 
-    $(".tempGauge0").tempGauge({width:100, borderWidth:2, showLabel:true, showScale : true});
+    $(".tempGauge0").tempGauge({ width: 100, borderWidth: 2, showLabel: true, showScale: true });
+
+    $
+    jQuery.ajax({
+        url: '/Home/GetData/',
+        type: 'POST',
+        contentType: "application/json",
+        dataType: "json",
+        success: function (response) {
+            battery.Update(response.Tensao);
+
+            $('#lap-qtd').empty();
+            $('#freio-qtd').empty();
+            $('.tempGauge0').empty();
+
+            $('#lap-qtd').append(response.FreiosQTD);
+            $('#freio-qtd').append(response.VoltasQTD);
+            $('.tempGauge0').append(response.Temperatura+'&deg;C');
+
+            console.log(response);
+        },
+        error: function (err) {            
+            console.log(err);
+        }
+    }); 
 </script>

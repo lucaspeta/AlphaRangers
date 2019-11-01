@@ -18,5 +18,7 @@ namespace AlphaRangers.Models
         public int Temperatura { get; set; }
         public int Bateria { get; set; }
         public DateTime CreatedDate { get; set; }
+
+        public Baja() { }
     }
 }
