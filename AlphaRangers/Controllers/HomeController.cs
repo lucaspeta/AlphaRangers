@@ -33,6 +33,31 @@ namespace AlphaRangers.Controllers
             );
         }
 
+        [HttpPost]
+        public JsonResult SendFlag(Flags flags)
+        {
+            string flagAtivada = "";
+
+            if (flags.Green)
+                flagAtivada = "Flag Verde ativada";
+
+            if(flags.Yellow)
+                flagAtivada = "Flag Amarela ativada";
+
+            if (flags.Red)
+                flagAtivada = "Flag Vermelha ativada";
+
+            if (flags.Shutdown)
+                flagAtivada = "desligando...";
+
+            
+            return Json( 
+                new {
+                    flag_ativada = flagAtivada
+                }
+            );
+        }
+
         public ActionResult Reports()
         {
             ViewBag.Message = "Your application description page.";

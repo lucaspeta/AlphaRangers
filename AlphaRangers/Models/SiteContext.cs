@@ -13,6 +13,7 @@
         }
 
         public virtual DbSet<Baja> Baja { get; set; }
-        
+        public virtual DbSet<Flags> Flags { get; set; }
+
     }
 }

@@ -25,13 +25,13 @@
 
 <div class="row" style="margin-top: 10px; background-color: rgba(200,200,200,0.8); padding: 20px 20px 20px 20px; border-radius: 5px;">
     <div class="col-md-4">
-        <a class="btn green-btn" href="#"><i class="ion-ios-arrow-down"></i></a>
+        <a class="btn flag green-btn"><i class="ion-ios-arrow-down"></i></a>
     </div>
     <div class="col-md-4">
-        <a class="btn yellow-btn" href="#"><i class="ion-ios-arrow-down"></i></a>
+        <a class="btn flag yellow-btn"><i class="ion-ios-arrow-down"></i></a>
     </div>
     <div class="col-md-4">
-        <a class="btn red-btn" href="#"><i class="ion-ios-arrow-down"></i></a>
+        <a class="btn flag red-btn"><i class="ion-ios-arrow-down"></i></a>
     </div>
 </div>
 
@@ -40,7 +40,7 @@
 @RenderPage("~/Views/Home/plugins.cshtml")
 
 <script type="text/javascript">
-    $("#speedometer").myfunc({ divFact: 10, eventListenerType: 'keyup' });
+    $("#speedometer").speedometer({ divFact: 10, eventListenerType: 'keyup' });
 
     battery = $("#battery").battery({
         backgroundColor: '#1ABC9C',
@@ -48,11 +48,39 @@
         maxWidth: 150
     });
 
-    battery.Update(100);
-
     $(".tempGauge0").tempGauge({ width: 100, borderWidth: 2, showLabel: true, showScale: true });
 
-    $
+    $(".green-btn, .yellow-btn, .red-btn, .shutdown-btn").on('click', function () {
+        var class_name = this.className.split(" ")[2];
+
+        var green = (class_name == "green-btn") ? true : false;
+        var yellow = (class_name == "yellow-btn") ? true : false;
+        var red = (class_name == "red-btn") ? true : false;
+        var shutdown = (class_name == "shutdown-btn") ? true : false;
+
+        var data = {
+            Green: green,
+            Yellow: yellow,
+            Red: red,
+            Shutdown: shutdown
+        };
+
+        jQuery.ajax({
+            url: '/Home/SendFlag/',
+            type: 'POST',
+            data: data,
+            contentType: "application/json",
+            dataType: "json",
+            success: function (response) {
+                alert(response.flag_ativada);
+                console.log(response);
+            },
+            error: function (err) {            
+                console.log(err);
+            }
+        }); 
+    });
+
     jQuery.ajax({
         url: '/Home/GetData/',
         type: 'POST',
@@ -67,7 +95,9 @@
 
             $('#lap-qtd').append(response.FreiosQTD);
             $('#freio-qtd').append(response.VoltasQTD);
-            $('.tempGauge0').append(response.Temperatura+'&deg;C');
+
+
+            $('.tempGauge0').append('<html>'+response.Temperatura+'&deg;C</html>');
 
             console.log(response);
         },
