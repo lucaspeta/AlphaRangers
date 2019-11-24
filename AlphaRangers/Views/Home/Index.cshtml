@@ -2,14 +2,17 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="row" style="margin-top: 20px; margin-left: 20px;">
-    <div class="col-md-4">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans:400,700'>
+
+<div class="row" style="margin-top: 60px; margin-left: -60px;">
+    <div class="col-md-3">
         <div id="battery" style="margin-left: 50px; margin-top: 120px;"></div>
     </div>
-    <div class="col-md-4">
-        <input id="speedometer" />
+    <div class="col-md-3">
+        <input id="speedometer" style="display: none;" />
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3" style="margin-left: 60px;">
         <div>
             <img style="position: absolute; width: 100px; margin-top: 160px; margin-left: 10px;" src="~/images/lap.png" />
             <div id="lap-qtd" style="position: absolute; margin-top: 245px; margin-left: 10px; font-size: 40pt;"><div id="lap-qtd">0</div></div>
@@ -17,13 +20,13 @@
             <img style="position: absolute;" src="~/images/foot-press.jpg" />
             <div id="freio-qtd" style="position: absolute; margin-top: 100px; margin-left: 10px; font-size: 40pt;"><div id="freio-qtd">0</div></div>
         </div>
-        <div style="margin-left: 250px; margin-top: 50px;">
-            <div class="tempGauge0"></div>
+        <div style="border-radius: 200px 200px 10px 10px; background-color: rgba(0,0,0, 0.9); padding-left: 20px; padding-right: 320px; padding-top:20px; margin-top: 40px; margin-left: 190px;">
+            <div class="gauge"></div>
         </div>
     </div>
 </div>
 
-<div class="row" style="margin-top: 10px; background-color: rgba(200,200,200,0.8); padding: 20px 20px 20px 20px; border-radius: 5px;">
+<div class="row" style="margin-top: 10px; margin-left: -50px; background-color: rgba(200,200,200,0.8); padding: 20px 20px 20px 20px; border-radius: 5px;">
     <div class="col-md-4">
         <a class="btn flag green-btn"><i class="ion-ios-arrow-down"></i></a>
     </div>
@@ -35,20 +38,22 @@
     </div>
 </div>
 
+<script src="~/Scripts/jquery.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="//code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src='https://cdn3.devexpress.com/jslib/17.1.6/js/dx.all.js'></script>
 
 @RenderPage("~/Views/Home/plugins.cshtml")
+@RenderPage("~/Views/Home/Gauge.cshtml")
 
 <script type="text/javascript">
-    $("#speedometer").speedometer({ divFact: 10, eventListenerType: 'keyup' });
+    $("#speedometer").speedometer({ divFact: 5, eventListenerType: 'change', maxVal: 80, dangerLevel: 60 });
 
     battery = $("#battery").battery({
         backgroundColor: '#1ABC9C',
         batteryColor: '#16A085',
         maxWidth: 150
     });
-
-    $(".tempGauge0").tempGauge({ width: 100, borderWidth: 2, showLabel: true, showScale: true });
 
     $(".green-btn, .yellow-btn, .red-btn, .shutdown-btn").on('click', function () {
         var class_name = this.className.split(" ")[2];
@@ -68,17 +73,17 @@
         jQuery.ajax({
             url: '/Home/SendFlag/',
             type: 'POST',
-            data: data,
+            data: JSON.stringify(data),
             contentType: "application/json",
             dataType: "json",
             success: function (response) {
                 alert(response.flag_ativada);
                 console.log(response);
             },
-            error: function (err) {            
+            error: function (err) {
                 console.log(err);
             }
-        }); 
+        });
     });
 
     jQuery.ajax({
@@ -91,18 +96,24 @@
 
             $('#lap-qtd').empty();
             $('#freio-qtd').empty();
-            $('.tempGauge0').empty();
 
             $('#lap-qtd').append(response.FreiosQTD);
             $('#freio-qtd').append(response.VoltasQTD);
+            $('#speedometer').val(response.Velocidade);
+            $('#speedometer').trigger('change');
 
+            $('.gauge').each(function (index, item) {
+                let gauge = $(item).dxCircularGauge('instance');
+                let gaugeElement = $(gauge._$element[0]);
 
-            $('.tempGauge0').append('<html>'+response.Temperatura+'&deg;C</html>');
+                gaugeElement.find('.dxg-title text').last().html(`${response.Temperatura} ºC`);
+                gauge.value(response.Temperatura);
+            });
 
             console.log(response);
         },
-        error: function (err) {            
+        error: function (err) {
             console.log(err);
         }
-    }); 
+    });
 </script>

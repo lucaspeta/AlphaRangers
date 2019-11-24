@@ -19,37 +19,51 @@ namespace AlphaRangers.Controllers
         [HttpPost]
         public JsonResult GetData()
         {
-            Baja Baja = db.Baja.ToList().Last();
+            var Baja = db.Baja
+                       .OrderByDescending(b => b.CreatedDate)
+                       .FirstOrDefault();
 
             return Json(
                 new
                 {
+                    Id = Baja.ID,
                     Velocidade = Baja.Velocidade,
                     Temperatura = Baja.Temperatura,
                     Tensao = Baja.Bateria,
                     FreiosQTD = Baja.FreioQtd,
-                    VoltasQTD = Baja.VoltasQtd
+                    VoltasQTD = Baja.VoltasQtd,
+                    CreatedDate = Baja.CreatedDate
                 }
             );
         }
 
         [HttpPost]
-        public JsonResult SendFlag(Flags flags)
+        public JsonResult SendFlag(bool Green, bool Yellow, bool Red, bool Shutdown)
         {
             string flagAtivada = "";
 
-            if (flags.Green)
+            Flags Flag = new Flags();
+
+            Flag.Green = Green;
+            Flag.Yellow = Yellow;
+            Flag.Red = Red;
+            Flag.Shutdown = Shutdown;
+            Flag.CreatedDate = DateTime.Now;
+
+            if (Green)
                 flagAtivada = "Flag Verde ativada";
 
-            if(flags.Yellow)
+            if(Yellow)
                 flagAtivada = "Flag Amarela ativada";
 
-            if (flags.Red)
+            if (Red)
                 flagAtivada = "Flag Vermelha ativada";
 
-            if (flags.Shutdown)
+            if (Shutdown)
                 flagAtivada = "desligando...";
 
+            db.Flags.Add(Flag);
+            db.SaveChanges();
             
             return Json( 
                 new {
