@@ -55,6 +55,10 @@
         maxWidth: 150
     });
 
+    $(document).ready(function () {
+        getData();
+    });
+
     $(".green-btn, .yellow-btn, .red-btn, .shutdown-btn").on('click', function () {
         var class_name = this.className.split(" ")[2];
 
@@ -86,34 +90,38 @@
         });
     });
 
-    jQuery.ajax({
-        url: '/Home/GetData/',
-        type: 'POST',
-        contentType: "application/json",
-        dataType: "json",
-        success: function (response) {
-            battery.Update(response.Tensao);
+    function getData()
+    {
+        jQuery.ajax({
+            url: '/Home/GetData/',
+            type: 'POST',
+            contentType: "application/json",
+            dataType: "json",
+            success: function (response) {
+                battery.Update(response.Tensao);
 
-            $('#lap-qtd').empty();
-            $('#freio-qtd').empty();
+                $('#lap-qtd').empty();
+                $('#freio-qtd').empty();
 
-            $('#lap-qtd').append(response.FreiosQTD);
-            $('#freio-qtd').append(response.VoltasQTD);
-            $('#speedometer').val(response.Velocidade);
-            $('#speedometer').trigger('change');
+                $('#lap-qtd').append(response.FreiosQTD);
+                $('#freio-qtd').append(response.VoltasQTD);
+                $('#speedometer').val(response.Velocidade);
+                $('#speedometer').trigger('change');
 
-            $('.gauge').each(function (index, item) {
-                let gauge = $(item).dxCircularGauge('instance');
-                let gaugeElement = $(gauge._$element[0]);
+                $('.gauge').each(function (index, item) {
+                    let gauge = $(item).dxCircularGauge('instance');
+                    let gaugeElement = $(gauge._$element[0]);
 
-                gaugeElement.find('.dxg-title text').last().html(`${response.Temperatura} ºC`);
-                gauge.value(response.Temperatura);
-            });
+                    gaugeElement.find('.dxg-title text').last().html(`${response.Temperatura} ºC`);
+                    gauge.value(response.Temperatura);
+                });
 
-            console.log(response);
-        },
-        error: function (err) {
-            console.log(err);
-        }
-    });
+                console.log(response);
+                setTimeout(getData(),500);
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }    
 </script>
